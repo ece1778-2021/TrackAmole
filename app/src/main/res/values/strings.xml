@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">Track-a-Mole</string>
+    <string name="label_start">Fakestagram</string>
+    <string name="label_registration">Registration</string>
+    <string name="label_profile">Fakestagram Profile</string>
+    <string name="label_global">Fakestagram Global Feed</string>
+    <!-- Global Strings -->
+    <string name="confirm">Confirm</string>
+    <string name="delete">Delete</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Log In</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="logout">Log Out</string>
+    <!-- Registration -->
+    <string name="alt_option">OR</string>
+    <string name="register_user">Sign Up</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="username">Username</string>
+    <string name="bio">A Short Bio</string>
+    <string name="action_add_picture">Add Picture</string>
+    <string name="pp_storage_name">profile_picture.jpg</string>
+    <!-- Main Page-->
+    <string name="new_photo">New Photo</string>
+    <string name="back">Back</string>
+    <string name="global_page">Global Feed</string>
+    <!-- Global Page-->
+    <string name="main_page">Back to My Feed</string>
+    <!-- Photo Page-->
+    <string name="caption">Caption</string>
+    <string name="auto_generate">Auto-Generate Hashtags</string>
+    <string name="caption_text">Hashtags will appear here if the switch is toggled and be added to the end of your caption.</string>
+    <string name="caption_loading_text">Hashtags loading, please wait....</string>
+    <!-- Comment Page-->
+    <string name="caption_default">No Caption</string>
+    <string name="comments_title">Comments</string>
+    <string name="comments_default">No Comments</string>
+    <string name="add_comment">Add Comment</string>
+</resources>
