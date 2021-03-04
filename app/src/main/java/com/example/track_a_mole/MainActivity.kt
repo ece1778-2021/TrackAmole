@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val user_data = db.collection("users").document(uid)
+        val user_data = db.collection("mole_users").document(uid)
         user_data.get()
             .addOnSuccessListener { document ->
                 if (document == null) {
@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
         
         loading.visibility = View.GONE
 //        val storageRef = storage.reference
-//        db.collection("photos").whereEqualTo("uid", uid).get()
+//        db.collection("mole_photos").whereEqualTo("uid", uid).get()
 //            .addOnSuccessListener { documents ->
 //                var ds = documents.sortedWith(compareBy { it.data["timestamp"] as Long })
 //                ds = ds.asReversed()

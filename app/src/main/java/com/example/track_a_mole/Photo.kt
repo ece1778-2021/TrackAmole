@@ -120,7 +120,7 @@ class Photo : AppCompatActivity() {
                 "caption" to capt
             )
 
-            db.collection("photos").document(dataUID)
+            db.collection("mole_photos").document(dataUID)
                 .set(new_img)
                 .addOnSuccessListener { Log.d("PHOTOS", "DB ADD SUCCESS") }
                 .addOnFailureListener { Log.d("PHOTOS", "DB ADD FAILURE") }

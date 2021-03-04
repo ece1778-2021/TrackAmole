@@ -56,7 +56,7 @@ class FocusImage : AppCompatActivity() {
             img.setImageBitmap(extras.get("PICTURE") as Bitmap)
 
             username = ""
-            db.collection("users").document(auth.currentUser?.uid as String).get()
+            db.collection("mole_users").document(auth.currentUser?.uid as String).get()
                 .addOnSuccessListener { document ->
                     if (document == null) {
                         Log.w("ZOOM", "No UID Matches")
@@ -70,7 +70,7 @@ class FocusImage : AppCompatActivity() {
                 }
 
 
-            imageData = db.collection("photos").document(imageUID)
+            imageData = db.collection("mole_photos").document(imageUID)
             val f = imageData.get()
                 .addOnSuccessListener { document ->
                     if (document == null) {

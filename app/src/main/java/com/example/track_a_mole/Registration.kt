@@ -133,7 +133,7 @@ class Registration : AppCompatActivity() {
                         "username" to providedUsername
                     )
 
-                    db.collection("users").document(userUID)
+                    db.collection("mole_users").document(userUID)
                         .set(new_user)
                         .addOnSuccessListener { Log.d("REGISTER", "DB ADD SUCCESS") }
                         .addOnFailureListener { Log.d("REGISTER", "DB ADD FAILURE") }

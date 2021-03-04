@@ -50,7 +50,7 @@ class GlobalFeed : AppCompatActivity() {
         Toast.makeText(this, "Loading Images. Please Wait.", Toast.LENGTH_SHORT).show()
 
         val storageRef = storage.reference
-        db.collection("photos").limit(MAX_NUM_PHOTOS).get()
+        db.collection("mole_photos").limit(MAX_NUM_PHOTOS).get()
             .addOnSuccessListener { documents ->
                 var ds = documents.sortedWith(compareBy { it.data["timestamp"] as Long })
                 ds = ds.asReversed()
