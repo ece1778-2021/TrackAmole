@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrackaMole">
+        <activity android:name=".Photo"></activity>
         <activity android:name=".History"
             android:parentActivityName=".MainActivity"></activity>
         <activity

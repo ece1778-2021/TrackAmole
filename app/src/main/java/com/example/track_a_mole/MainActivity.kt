@@ -130,43 +130,43 @@ class MainActivity : AppCompatActivity() {
         // Place first in case not loading any images
         
         loading.visibility = View.GONE
-        val storageRef = storage.reference
-        db.collection("photos").whereEqualTo("uid", uid).get()
-            .addOnSuccessListener { documents ->
-                var ds = documents.sortedWith(compareBy { it.data["timestamp"] as Long })
-                ds = ds.asReversed()
-                for (document in ds) {
-                    val sr = document.data["storageRef"]
-                    val pathReference = storageRef.child("$sr")
-
-                    val f = pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener { bytes ->
-                        if (bytes == null) {
-                            Log.d("PICS", "No picture in DB")
-                        }
-                        imgList.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
-                        strList.add(document.id)
-                        adapter.notifyDataSetChanged()
-                        Log.d("PICS", "Successfully loaded image $sr from DB")
-                    }.addOnFailureListener {
-                        Log.w("PICS", "Unable to get image $sr from DB")
-                    }
-                    // Solve the race condition by waiting for each one
-                    // This is not ideal but should be ok for this type of scale
-                    while (!f.isComplete) {
-                        loading.visibility = View.VISIBLE
-                        Thread.sleep(50)
-                        loading.visibility = View.GONE
-                    }
-                }
-            }
-            .addOnFailureListener {
-                Log.d("PICS", "Unable to find user images.")
-                Toast.makeText(
-                    this,
-                    "Unable to Load Images! Please log out and back in again.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+//        val storageRef = storage.reference
+//        db.collection("photos").whereEqualTo("uid", uid).get()
+//            .addOnSuccessListener { documents ->
+//                var ds = documents.sortedWith(compareBy { it.data["timestamp"] as Long })
+//                ds = ds.asReversed()
+//                for (document in ds) {
+//                    val sr = document.data["storageRef"]
+//                    val pathReference = storageRef.child("$sr")
+//
+//                    val f = pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener { bytes ->
+//                        if (bytes == null) {
+//                            Log.d("PICS", "No picture in DB")
+//                        }
+//                        imgList.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
+//                        strList.add(document.id)
+////                        adapter.notifyDataSetChanged()
+//                        Log.d("PICS", "Successfully loaded image $sr from DB")
+//                    }.addOnFailureListener {
+//                        Log.w("PICS", "Unable to get image $sr from DB")
+//                    }
+//                    // Solve the race condition by waiting for each one
+//                    // This is not ideal but should be ok for this type of scale
+//                    while (!f.isComplete) {
+//                        loading.visibility = View.VISIBLE
+//                        Thread.sleep(50)
+//                        loading.visibility = View.GONE
+//                    }
+//                }
+//            }
+//            .addOnFailureListener {
+//                Log.d("PICS", "Unable to find user images.")
+//                Toast.makeText(
+//                    this,
+//                    "Unable to Load Images! Please log out and back in again.",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
 
         photo.setOnClickListener { onNewPhoto() }
         history.setOnClickListener{ loadHistory()}
