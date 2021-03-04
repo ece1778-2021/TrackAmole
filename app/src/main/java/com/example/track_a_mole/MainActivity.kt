@@ -1,17 +1,22 @@
 package com.example.track_a_mole
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.api.ResourceDescriptor
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,7 +29,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 class MainActivity : AppCompatActivity() {
 
     private lateinit var username: TextView
-    private lateinit var bio: TextView
+    //private lateinit var bio: TextView
     private lateinit var img: CircleImageView
 
     private lateinit var loading: ProgressBar
@@ -36,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var uid: String
 
     private val REQUEST_IMAGE_CAPTURE: Int = 1
+    private val REQUEST_GALLERY_IMAGE: Int = 2
     private val NUM_COLUMNS: Int = 3
     private val ONE_MEGABYTE: Long = 1024 * 1024
 
@@ -51,12 +57,13 @@ class MainActivity : AppCompatActivity() {
         Log.d("PROFILE", "Profile Start")
 
         username = findViewById(R.id.profile_name)
-        bio = findViewById(R.id.bio)
+        //bio = findViewById(R.id.bio)
         img = findViewById(R.id.profile_image)
         loading = findViewById<ProgressBar>(R.id.loading)
         val logout: Button = findViewById(R.id.logout)
-        val photo: Button = findViewById(R.id.new_photo)
-        val globalStart: Button = findViewById(R.id.global_page)
+        val photo: Button = findViewById(R.id.button_picture)
+        val history: Button = findViewById(R.id.button_history)
+        //val globalStart: Button = findViewById(R.id.global_page)
 
         if (auth.currentUser?.uid == null) {
             Log.w("PROFILE", "Got to Profile but no UID")
@@ -98,10 +105,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 val user_info = document.data
                 username.text = user_info?.get("username") as String
-                bio.text = user_info["bio"] as String
+                //bio.text = user_info["bio"] as String
 
                 username.visibility = View.VISIBLE
-                bio.visibility = View.VISIBLE
+                //bio.visibility = View.VISIBLE
 
 
                 Log.d("PROFILE", "Success - User successfully loaded")
@@ -114,11 +121,11 @@ class MainActivity : AppCompatActivity() {
 
 
         // Set up RecyclerVew
-        val rView: RecyclerView = findViewById(R.id.recyclev)
-        rView.layoutManager = GridLayoutManager(this, NUM_COLUMNS)
+        //val rView: RecyclerView = findViewById(R.id.recyclev)
+        //rView.layoutManager = GridLayoutManager(this, NUM_COLUMNS)
 
-        adapter = CustomAdapter(imgList, strList)
-        rView.adapter = adapter
+        //adapter = CustomAdapter(imgList, strList)
+        //rView.adapter = adapter
 
         // Place first in case not loading any images
         
@@ -162,12 +169,26 @@ class MainActivity : AppCompatActivity() {
             }
 
         photo.setOnClickListener { onNewPhoto() }
+        history.setOnClickListener{ loadHistory()}
         logout.setOnClickListener { onLogout() }
-        globalStart.setOnClickListener { onGlobal() }
+        //globalStart.setOnClickListener { onGlobal() }
+    }
+
+    private fun loadHistory(){
+        val getHistory = Intent(this, History::class.java)
+        startActivity(getHistory)
+
     }
 
     private fun onNewPhoto() {
+        //selectImage()
         dispatchTakePictureIntent()
+    }
+
+    private fun selectImage(){
+        val pickPhoto = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        //val pickPhoto = Intent(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(pickPhoto, REQUEST_GALLERY_IMAGE)
     }
 
     private fun dispatchTakePictureIntent() {
@@ -180,10 +201,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
+            val photoIntent = Intent(this, Photo::class.java)
+            photoIntent.putExtra(
+                "NEW_PHOTO",
+                imageBitmap
+            )
+            startActivity(photoIntent)
+        }
+        if (requestCode == REQUEST_GALLERY_IMAGE && resultCode == RESULT_OK) {
+            var imageUri = data?.data
+            val source = imageUri?.let { ImageDecoder.createSource(this.contentResolver, it) }
+            val imageBitmap = source?.let { ImageDecoder.decodeBitmap(it) }
             val photoIntent = Intent(this, Photo::class.java)
             photoIntent.putExtra(
                 "NEW_PHOTO",

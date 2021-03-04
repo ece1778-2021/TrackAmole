@@ -30,7 +30,7 @@ class Registration : AppCompatActivity() {
     private lateinit var pw: EditText
     private lateinit var pw2: EditText
     private lateinit var username: EditText
-    private lateinit var bio: EditText
+    //private lateinit var bio: EditText
     private lateinit var image: CircleImageView
 
     private lateinit var loading: ProgressBar
@@ -56,7 +56,7 @@ class Registration : AppCompatActivity() {
         pw = findViewById<EditText>(R.id.password)
         pw2 = findViewById<EditText>(R.id.password_confirmation)
         username = findViewById<EditText>(R.id.username)
-        bio = findViewById<EditText>(R.id.bio)
+        //bio = findViewById<EditText>(R.id.bio)
         image = findViewById(R.id.profile_image)
         loading = findViewById<ProgressBar>(R.id.loading)
         imageButton = findViewById(R.id.add_image)
@@ -89,7 +89,7 @@ class Registration : AppCompatActivity() {
         val providedEmail = email.text.toString()
         val providedPassword = pw.text.toString()
         val providedUsername = username.text.toString()
-        val providedBio = bio.text.toString()
+        //val providedBio = bio.text.toString()
 
         // Catch user input which will cause the app to crash and return failure
         if ((providedEmail == "") || (providedPassword == "")) {
@@ -106,12 +106,12 @@ class Registration : AppCompatActivity() {
         }
 
         // Catch other NULL inputs (password handled by checkPasswordMatch)
-        if ((providedUsername == "") || (providedBio == "")) {
+        if ((providedUsername == "")) {
             Log.d("REGISTER", "User did not provide input U/B")
             loading.visibility = View.GONE
             val t = Toast.makeText(
                 this,
-                "Error: Blank username and/or bio fields. Please fill out these fields",
+                "Error: Blank username field. Please fill out these fields",
                 Toast.LENGTH_LONG
             )
             t.setGravity(Gravity.CENTER, 0, 0)
@@ -130,8 +130,7 @@ class Registration : AppCompatActivity() {
 
                     val new_user = hashMapOf(
                         "email" to providedEmail,
-                        "username" to providedUsername,
-                        "bio" to providedBio
+                        "username" to providedUsername
                     )
 
                     db.collection("users").document(userUID)

@@ -19,7 +19,7 @@
     <string name="logout">Log Out</string>
     <!-- Registration -->
     <string name="alt_option">OR</string>
-    <string name="register_user">Sign Up</string>
+    <string name="register_user">Register</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="username">Username</string>
     <string name="bio">A Short Bio</string>
