@@ -30,9 +30,14 @@ class Photo : AppCompatActivity() {
 
     private lateinit var uid: String
 
-    private lateinit var cpText: EditText
+    private lateinit var asyText: EditText
+    private lateinit var bordText: EditText
+    private lateinit var colText: EditText
+    private lateinit var evolText: EditText
+    private lateinit var diamText: EditText
+
     private lateinit var img: ImageView
-    private lateinit var captionGen: SwitchCompat
+    private lateinit var responseGen: SwitchCompat
     private lateinit var captionText: TextView
     private lateinit var labeltext: String
 
@@ -44,12 +49,20 @@ class Photo : AppCompatActivity() {
         val back = findViewById<Button>(R.id.back)
         val confirm = findViewById<Button>(R.id.confirm)
 
-        captionGen = findViewById<SwitchCompat>(R.id.autogencaption)
+        responseGen = findViewById<SwitchCompat>(R.id.autogenresponses)
 
         img = findViewById(R.id.bigImageView)
-        cpText = findViewById(R.id.caption)
 
-        captionText = findViewById(R.id.captionText)
+        //cpText = findViewById(R.id.caption)
+        asyText = findViewById(R.id.asym_response)
+        bordText = findViewById(R.id.border_response)
+        colText = findViewById(R.id.colour_response)
+        diamText = findViewById(R.id.diameter_response)
+        evolText = findViewById(R.id.evolve_response)
+
+
+
+        //captionText = findViewById(R.id.captionText)
 
         uid = auth.currentUser?.uid.toString()
 
@@ -62,7 +75,7 @@ class Photo : AppCompatActivity() {
 
         back.setOnClickListener { onBackPressed() }
         confirm.setOnClickListener { onConfirm() }
-        captionGen.setOnCheckedChangeListener { bt: CompoundButton, checked: Boolean ->
+        responseGen.setOnCheckedChangeListener { bt: CompoundButton, checked: Boolean ->
             onSwitch(
                 checked
             )
@@ -82,7 +95,7 @@ class Photo : AppCompatActivity() {
                     tmpText = tmpText.plus(" #$t")
                 }
                 labeltext = tmpText
-                if (captionGen.isChecked) {
+                if (responseGen.isChecked) {
                     captionText.text = labeltext
                 }
             }
@@ -106,10 +119,14 @@ class Photo : AppCompatActivity() {
         val uploadTask = imgRef.putBytes(dt)
         val dataUID = "$uid$nowStr"
 
-        var capt = cpText.text.toString()
-        if (captionGen.isChecked) {
-            capt = capt.plus(captionText.text.toString())
-        }
+        var asym = asyText.text.toString()
+        var border = bordText.text.toString()
+        var colour = colText.text.toString()
+        var diameter = diamText.text.toString()
+        var evolve = evolText.text.toString()
+//        if (captionGen.isChecked) {
+//            capt = capt.plus(captionText.text.toString())
+//        }
 
 
         uploadTask.addOnSuccessListener { taskSnapshot ->
@@ -117,7 +134,11 @@ class Photo : AppCompatActivity() {
                 "storageRef" to pathString,
                 "timestamp" to now,
                 "uid" to uid,
-                "caption" to capt
+                "asymetry" to asym,
+                "border" to border,
+                "colour" to colour,
+                "diameter" to diameter,
+                "evolve" to evolve
             )
 
             db.collection("mole_photos").document(dataUID)

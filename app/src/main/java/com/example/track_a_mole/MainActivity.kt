@@ -1,7 +1,6 @@
 package com.example.track_a_mole
 
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -14,9 +13,6 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.api.ResourceDescriptor
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -63,6 +59,7 @@ class MainActivity : AppCompatActivity() {
         val logout: Button = findViewById(R.id.logout)
         val photo: Button = findViewById(R.id.button_picture)
         val history: Button = findViewById(R.id.button_history)
+        val gallery_photo: Button = findViewById(R.id.button_gallery)
         //val globalStart: Button = findViewById(R.id.global_page)
 
         if (auth.currentUser?.uid == null) {
@@ -169,6 +166,7 @@ class MainActivity : AppCompatActivity() {
 //            }
 
         photo.setOnClickListener { onNewPhoto() }
+        gallery_photo.setOnClickListener { selectImage() }
         history.setOnClickListener{ loadHistory()}
         logout.setOnClickListener { onLogout() }
         //globalStart.setOnClickListener { onGlobal() }
