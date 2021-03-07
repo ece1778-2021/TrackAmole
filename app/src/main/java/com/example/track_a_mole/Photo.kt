@@ -19,8 +19,17 @@ import com.google.firebase.storage.ktx.storage
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.label.ImageLabeling
 import com.google.mlkit.vision.label.defaults.ImageLabelerOptions
+import org.opencv.android.BaseLoaderCallback
+import org.opencv.android.LoaderCallbackInterface
+import org.opencv.android.OpenCVLoader
+import org.opencv.android.Utils
+import org.opencv.core.Mat
+import org.opencv.core.MatOfPoint
+import org.opencv.core.Scalar
+import org.opencv.imgproc.Imgproc
 import java.io.ByteArrayOutputStream
 import java.util.*
+import kotlin.math.sqrt
 
 class Photo : AppCompatActivity() {
 
@@ -41,6 +50,18 @@ class Photo : AppCompatActivity() {
     private lateinit var captionText: TextView
     private lateinit var labeltext: String
 
+    private val loader = object : BaseLoaderCallback(this) {
+        override fun onManagerConnected(status: Int) {
+            when (status) {
+                LoaderCallbackInterface.SUCCESS -> {
+                    System.loadLibrary("opencv_java3")
+                    processImage()
+                }
+                else -> super.onManagerConnected(status)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo)
@@ -60,10 +81,6 @@ class Photo : AppCompatActivity() {
         diamText = findViewById(R.id.diameter_response)
         evolText = findViewById(R.id.evolve_response)
 
-
-
-        //captionText = findViewById(R.id.captionText)
-
         uid = auth.currentUser?.uid.toString()
 
         val extras: Bundle? = intent.extras
@@ -75,33 +92,67 @@ class Photo : AppCompatActivity() {
 
         back.setOnClickListener { onBackPressed() }
         confirm.setOnClickListener { onConfirm() }
-        responseGen.setOnCheckedChangeListener { bt: CompoundButton, checked: Boolean ->
-            onSwitch(
-                checked
-            )
+//        responseGen.setOnCheckedChangeListener { bt: CompoundButton, checked: Boolean ->
+//            onSwitch(
+//                checked
+//            )
+//    }
+
+        if (OpenCVLoader.initDebug()) {
+            Log.d("OPENCV", "OpenCV successfully loaded")
+            loader.onManagerConnected(LoaderCallbackInterface.SUCCESS)
+        } else {
+            Log.d("OPENCV", "OpenCV load failed")
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_4_0, this, loader)
         }
+    }
 
-        labeltext = getString(R.string.caption_loading_text)
+    private fun processImage() {
+        // Create data structures
+        val src = (img.drawable as BitmapDrawable).bitmap
+        val final: Bitmap = Bitmap.createBitmap(src)
+        val cvImgBase = Mat()
+        val cvImg = Mat()
+        val h = Mat()
 
-        val opts = ImageLabelerOptions.Builder().setConfidenceThreshold(0.7f).build()
-        val labeler = ImageLabeling.getClient(opts)
-        val image = InputImage.fromBitmap((img.drawable as BitmapDrawable).bitmap, 0)
-        var tmpText = ""
+        // Perform inital processing on image
+        Utils.bitmapToMat(src as Bitmap, cvImgBase)
+        Imgproc.cvtColor(cvImgBase, cvImg, Imgproc.COLOR_BGR2GRAY)
+        Imgproc.medianBlur(cvImg, cvImg, 3)
+        Imgproc.Canny(cvImg, cvImg, 10.0, 100.0)
 
-        labeler.process(image)
-            .addOnSuccessListener { labels ->
-                for (label in labels) {
-                    val t = label.text
-                    tmpText = tmpText.plus(" #$t")
-                }
-                labeltext = tmpText
-                if (responseGen.isChecked) {
-                    captionText.text = labeltext
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.w("CAPT", e.toString())
-            }
+        // Identify contour(s) in image
+        val ctrs = mutableListOf<MatOfPoint>()
+        Imgproc.findContours(cvImg, ctrs, h, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE)
+
+        // Do math
+        val s = ctrs.size
+        val areas = MutableList<Double>(s) { index -> 0.0 }
+        val colours = MutableList<Int>(s) { index -> 0 }
+        val symmetry = MutableList<Double>(s) { index -> 0.0 }
+        for (idx in ctrs.indices) {
+            // Get Mole Area
+            areas[idx] = Imgproc.contourArea(ctrs[idx])
+
+            // Calculate the symmetry with PCA & center for colour
+            val m = Imgproc.moments(ctrs[idx])
+
+            val cX = (m.m10 / m.m00).toInt()
+            val cY = (m.m01 / m.m00).toInt()
+            colours[idx] = src.getPixel(cX, cY)
+            symmetry[idx] = checkSymmetry(m.mu20, m.mu11, m.mu02)
+
+            // Draw contour around the mole
+            Imgproc.drawContours(cvImgBase, ctrs, idx, Scalar(0.0, 255.0, 0.0))
+        }
+        val aStr = areas.toString()
+        val cStr = colours.toString()
+        val sStr = symmetry.toString()
+        Log.i("OPENCV", "Areas: $aStr")
+        Log.i("OPENCV", "Colours: $cStr")
+        Log.i("OPENCV", "Symmetry: $sStr")
+        Utils.matToBitmap(cvImgBase, final)
+        img.setImageBitmap(final)
     }
 
     private fun onConfirm() {
@@ -119,11 +170,11 @@ class Photo : AppCompatActivity() {
         val uploadTask = imgRef.putBytes(dt)
         val dataUID = "$uid$nowStr"
 
-        var asym = asyText.text.toString()
-        var border = bordText.text.toString()
-        var colour = colText.text.toString()
-        var diameter = diamText.text.toString()
-        var evolve = evolText.text.toString()
+        val asym = asyText.text.toString()
+        val border = bordText.text.toString()
+        val colour = colText.text.toString()
+        val diameter = diamText.text.toString()
+        val evolve = evolText.text.toString()
 //        if (captionGen.isChecked) {
 //            capt = capt.plus(captionText.text.toString())
 //        }
@@ -156,11 +207,27 @@ class Photo : AppCompatActivity() {
         startActivity(mainIntent)
     }
 
-    private fun onSwitch(checked: Boolean) {
-        if (checked) {
-            captionText.text = labeltext
-        } else {
-            captionText.text = getString(R.string.caption_text)
-        }
-    }
+//    private fun onSwitch(checked: Boolean) {
+//    }
+}
+
+fun checkSymmetry(cm20: Double, cm11: Double, cm02: Double): Double {
+    /*
+    * Check symmetry of a 2D object given the relevant moments using PCA
+    * Derived from first principles.
+    * RETURNS: value = 1 => perfect symmetry
+    *          value = 0 => perfect asymmetry
+     */
+    // Calculate eigenvalues of covariance matrix using quadratic formula, where the matrix is:
+    // [cm20 cm11
+    //  cm11 cm02]
+    // Due to matrix properties it is guaranteed that there will be two real +ve eigenvals
+    val b: Double = -1.0 * (cm20 + cm02)
+    val c: Double = cm20 * cm02 - (cm11 * cm11)
+    val sqrt_disc: Double = sqrt((b * b) - (4  * c))
+
+    val ev1 = (-b + sqrt_disc) / 2.0
+    val ev2 = (-b - sqrt_disc) / 2.0
+
+    return if (ev2 > ev1) ev1 / ev2 else ev2 / ev1
 }

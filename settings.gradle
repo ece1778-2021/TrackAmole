@@ -1,2 +1,3 @@
 include ':app'
 rootProject.name = "Track-a-Mole"
+include ':OpenCV343'

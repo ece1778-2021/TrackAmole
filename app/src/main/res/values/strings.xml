@@ -34,8 +34,6 @@
     <!-- Photo Page-->
     <string name="caption">Caption</string>
     <string name="auto_generate">Auto-Generate Properties</string>
-    <string name="caption_text">Hashtags will appear here if the switch is toggled and be added to the end of your caption.</string>
-    <string name="caption_loading_text">Hashtags loading, please wait....</string>
     <!-- Comment Page-->
     <string name="caption_default">No Caption</string>
     <string name="comments_title">Comments</string>
