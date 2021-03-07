@@ -65,7 +65,7 @@ class History : AppCompatActivity() {
                         }
                         imgList.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
                         strList.add(document.id)
-//                        adapter.notifyDataSetChanged()
+                        adapter.notifyDataSetChanged()
                         Log.d("PICS", "Successfully loaded image $sr from DB")
                     }.addOnFailureListener {
                         Log.w("PICS", "Unable to get image $sr from DB")
