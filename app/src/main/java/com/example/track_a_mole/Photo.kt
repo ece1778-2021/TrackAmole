@@ -1,6 +1,7 @@
 package com.example.track_a_mole
 
 import android.content.Intent
+import android.database.sqlite.SQLiteBindOrColumnIndexOutOfRangeException
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.app.AppCompatActivity
@@ -16,9 +17,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.label.ImageLabeling
-import com.google.mlkit.vision.label.defaults.ImageLabelerOptions
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.LoaderCallbackInterface
 import org.opencv.android.OpenCVLoader
@@ -47,8 +45,10 @@ class Photo : AppCompatActivity() {
 
     private lateinit var img: ImageView
     private lateinit var responseGen: SwitchCompat
-    private lateinit var captionText: TextView
-    private lateinit var labeltext: String
+
+    private var area: Double? = null
+    private var colour: Int? = null
+    private var symmetry:Double? = null
 
     private val loader = object : BaseLoaderCallback(this) {
         override fun onManagerConnected(status: Int) {
@@ -74,7 +74,6 @@ class Photo : AppCompatActivity() {
 
         img = findViewById(R.id.bigImageView)
 
-        //cpText = findViewById(R.id.caption)
         asyText = findViewById(R.id.asym_response)
         bordText = findViewById(R.id.border_response)
         colText = findViewById(R.id.colour_response)
@@ -92,11 +91,11 @@ class Photo : AppCompatActivity() {
 
         back.setOnClickListener { onBackPressed() }
         confirm.setOnClickListener { onConfirm() }
-//        responseGen.setOnCheckedChangeListener { bt: CompoundButton, checked: Boolean ->
-//            onSwitch(
-//                checked
-//            )
-//    }
+        responseGen.setOnCheckedChangeListener { bt: CompoundButton, checked: Boolean ->
+            onSwitch(
+                checked
+            )
+    }
 
         if (OpenCVLoader.initDebug()) {
             Log.d("OPENCV", "OpenCV successfully loaded")
@@ -129,7 +128,8 @@ class Photo : AppCompatActivity() {
         val s = ctrs.size
         val areas = MutableList<Double>(s) { index -> 0.0 }
         val colours = MutableList<Int>(s) { index -> 0 }
-        val symmetry = MutableList<Double>(s) { index -> 0.0 }
+        val symmetries = MutableList<Double>(s) { index -> 0.0 }
+
         for (idx in ctrs.indices) {
             // Get Mole Area
             areas[idx] = Imgproc.contourArea(ctrs[idx])
@@ -140,14 +140,18 @@ class Photo : AppCompatActivity() {
             val cX = (m.m10 / m.m00).toInt()
             val cY = (m.m01 / m.m00).toInt()
             colours[idx] = src.getPixel(cX, cY)
-            symmetry[idx] = checkSymmetry(m.mu20, m.mu11, m.mu02)
+            symmetries[idx] = checkSymmetry(m.mu20, m.mu11, m.mu02)
 
             // Draw contour around the mole
             Imgproc.drawContours(cvImgBase, ctrs, idx, Scalar(0.0, 255.0, 0.0))
         }
         val aStr = areas.toString()
         val cStr = colours.toString()
-        val sStr = symmetry.toString()
+        val sStr = symmetries.toString()
+
+        area = areas.sum() / s
+        symmetry = symmetries.sum() / s
+
         Log.i("OPENCV", "Areas: $aStr")
         Log.i("OPENCV", "Colours: $cStr")
         Log.i("OPENCV", "Symmetry: $sStr")
@@ -175,10 +179,6 @@ class Photo : AppCompatActivity() {
         val colour = colText.text.toString()
         val diameter = diamText.text.toString()
         val evolve = evolText.text.toString()
-//        if (captionGen.isChecked) {
-//            capt = capt.plus(captionText.text.toString())
-//        }
-
 
         uploadTask.addOnSuccessListener { taskSnapshot ->
             val new_img = hashMapOf(
@@ -207,8 +207,24 @@ class Photo : AppCompatActivity() {
         startActivity(mainIntent)
     }
 
-//    private fun onSwitch(checked: Boolean) {
-//    }
+    private fun onSwitch(checked: Boolean) {
+        if (area == null || symmetry == null) {
+            Toast.makeText(this, "Image is being processed.\nPlease reset switch and try again.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (checked) {
+            asyText.setText(symmetryText(symmetry!!))
+            asyText.isEnabled = false
+            diamText.setText(diamText(area!!))
+            diamText.isEnabled = false
+        }
+        else {
+            asyText.text.clear()
+            asyText.isEnabled = true
+            diamText.text.clear()
+            diamText.isEnabled = true
+        }
+    }
 }
 
 fun checkSymmetry(cm20: Double, cm11: Double, cm02: Double): Double {
@@ -230,4 +246,14 @@ fun checkSymmetry(cm20: Double, cm11: Double, cm02: Double): Double {
     val ev2 = (-b - sqrt_disc) / 2.0
 
     return if (ev2 > ev1) ev1 / ev2 else ev2 / ev1
+}
+
+fun symmetryText (symmetry: Double): String {
+    // TODO: Choose better threshold
+    return if (symmetry > 0.7) "Yes" else "No"
+}
+
+fun diamText(area:Double): String {
+    // TODO: Choose way better threshold
+    return if (area > 100.0) "Yes" else "No"
 }

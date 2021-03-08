@@ -32,11 +32,16 @@
     <!-- Global Page-->
     <string name="main_page">Back to My Feed</string>
     <!-- Photo Page-->
-    <string name="caption">Caption</string>
-    <string name="auto_generate">Auto-Generate Properties</string>
+    <string name="auto_generate">Auto-Populate (where possible)</string>
+    <string name="questionnaire_hint">Yes, No, Unsure</string>
+    <string name="mole_symmetry_q">Is the mole symmetric?</string>
+    <string name="mole_evolve_q">Has the mole changed over time?</string>
+    <string name="mole_colour_q">Does the mole contain multiple colours?</string>
+    <string name="mole_diam_q">Is the diameter larger than 6 millimeters across?</string>
+    <string name="mole_border_q">Are the edges of the mole notched, ragged or blurred?</string>
     <!-- Comment Page-->
     <string name="caption_default">No Caption</string>
     <string name="comments_title">Comments</string>
     <string name="comments_default">No Comments</string>
     <string name="add_comment">Add Comment</string>
-</resources>
+    </resources>
