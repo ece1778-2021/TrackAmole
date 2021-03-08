@@ -53,14 +53,12 @@ class MainActivity : AppCompatActivity() {
         Log.d("PROFILE", "Profile Start")
 
         username = findViewById(R.id.profile_name)
-        //bio = findViewById(R.id.bio)
         img = findViewById(R.id.profile_image)
         loading = findViewById<ProgressBar>(R.id.loading)
         val logout: Button = findViewById(R.id.logout)
         val photo: Button = findViewById(R.id.button_picture)
         val history: Button = findViewById(R.id.button_history)
         val gallery_photo: Button = findViewById(R.id.button_gallery)
-        //val globalStart: Button = findViewById(R.id.global_page)
 
         if (auth.currentUser?.uid == null) {
             Log.w("PROFILE", "Got to Profile but no UID")
@@ -102,10 +100,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 val user_info = document.data
                 username.text = user_info?.get("username") as String
-                //bio.text = user_info["bio"] as String
 
                 username.visibility = View.VISIBLE
-                //bio.visibility = View.VISIBLE
 
 
                 Log.d("PROFILE", "Success - User successfully loaded")
@@ -115,61 +111,13 @@ class MainActivity : AppCompatActivity() {
                 val exitIntent = Intent(this, StartScreen::class.java)
                 startActivity(exitIntent)
             }
-
-
-        // Set up RecyclerVew
-        //val rView: RecyclerView = findViewById(R.id.recyclev)
-        //rView.layoutManager = GridLayoutManager(this, NUM_COLUMNS)
-
-        //adapter = CustomAdapter(imgList, strList)
-        //rView.adapter = adapter
-
-        // Place first in case not loading any images
         
         loading.visibility = View.GONE
-//        val storageRef = storage.reference
-//        db.collection("mole_photos").whereEqualTo("uid", uid).get()
-//            .addOnSuccessListener { documents ->
-//                var ds = documents.sortedWith(compareBy { it.data["timestamp"] as Long })
-//                ds = ds.asReversed()
-//                for (document in ds) {
-//                    val sr = document.data["storageRef"]
-//                    val pathReference = storageRef.child("$sr")
-//
-//                    val f = pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener { bytes ->
-//                        if (bytes == null) {
-//                            Log.d("PICS", "No picture in DB")
-//                        }
-//                        imgList.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
-//                        strList.add(document.id)
-////                        adapter.notifyDataSetChanged()
-//                        Log.d("PICS", "Successfully loaded image $sr from DB")
-//                    }.addOnFailureListener {
-//                        Log.w("PICS", "Unable to get image $sr from DB")
-//                    }
-//                    // Solve the race condition by waiting for each one
-//                    // This is not ideal but should be ok for this type of scale
-//                    while (!f.isComplete) {
-//                        loading.visibility = View.VISIBLE
-//                        Thread.sleep(50)
-//                        loading.visibility = View.GONE
-//                    }
-//                }
-//            }
-//            .addOnFailureListener {
-//                Log.d("PICS", "Unable to find user images.")
-//                Toast.makeText(
-//                    this,
-//                    "Unable to Load Images! Please log out and back in again.",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
 
         photo.setOnClickListener { onNewPhoto() }
         gallery_photo.setOnClickListener { selectImage() }
         history.setOnClickListener{ loadHistory()}
         logout.setOnClickListener { onLogout() }
-        //globalStart.setOnClickListener { onGlobal() }
     }
 
     private fun loadHistory(){
@@ -180,6 +128,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onNewPhoto() {
         //selectImage()
+        Toast.makeText(this, "Hold camera 5cm directly above mole.", Toast.LENGTH_LONG).show()
         dispatchTakePictureIntent()
     }
 
@@ -212,7 +161,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(photoIntent)
         }
         if (requestCode == REQUEST_GALLERY_IMAGE && resultCode == RESULT_OK) {
-            var imageUri = data?.data
+            val imageUri = data?.data
             val source = imageUri?.let { ImageDecoder.createSource(this.contentResolver, it) }
             val imageBitmap = source?.let { ImageDecoder.decodeBitmap(it) }
             val photoIntent = Intent(this, Photo::class.java)
@@ -223,12 +172,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(photoIntent)
         }
     }
-
-//    private fun addImageFront(b: Bitmap) {
-//        imgList.add(0, b)
-    // strList
-//        adapter.notifyDataSetChanged()
-//    }
 
     private fun onLogout() {
         auth.signOut()

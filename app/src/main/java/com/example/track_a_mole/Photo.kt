@@ -1,7 +1,6 @@
 package com.example.track_a_mole
 
 import android.content.Intent
-import android.database.sqlite.SQLiteBindOrColumnIndexOutOfRangeException
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.app.AppCompatActivity
@@ -37,11 +36,12 @@ class Photo : AppCompatActivity() {
 
     private lateinit var uid: String
 
-    private lateinit var asyText: EditText
-    private lateinit var bordText: EditText
-    private lateinit var colText: EditText
-    private lateinit var evolText: EditText
-    private lateinit var diamText: EditText
+    private lateinit var asyText: Spinner
+    private lateinit var bordText: Spinner
+    private lateinit var colText:  Spinner
+    private lateinit var evolText: Spinner
+    private lateinit var diamText: Spinner
+    private lateinit var locationText: EditText
 
     private lateinit var img: ImageView
     private lateinit var responseGen: SwitchCompat
@@ -79,6 +79,7 @@ class Photo : AppCompatActivity() {
         colText = findViewById(R.id.colour_response)
         diamText = findViewById(R.id.diameter_response)
         evolText = findViewById(R.id.evolve_response)
+        locationText = findViewById(R.id.location_response)
 
         uid = auth.currentUser?.uid.toString()
 
@@ -103,6 +104,21 @@ class Photo : AppCompatActivity() {
         } else {
             Log.d("OPENCV", "OpenCV load failed")
             OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_4_0, this, loader)
+        }
+
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.dropdown_options,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            asyText.adapter = adapter
+            bordText.adapter = adapter
+            colText.adapter = adapter
+            diamText.adapter = adapter
+            evolText.adapter = adapter
         }
     }
 
@@ -174,11 +190,12 @@ class Photo : AppCompatActivity() {
         val uploadTask = imgRef.putBytes(dt)
         val dataUID = "$uid$nowStr"
 
-        val asym = asyText.text.toString()
-        val border = bordText.text.toString()
-        val colour = colText.text.toString()
-        val diameter = diamText.text.toString()
-        val evolve = evolText.text.toString()
+        val asym = asyText.selectedItem.toString()
+        val border = bordText.selectedItem.toString()
+        val colour = colText.selectedItem.toString()
+        val diameter = diamText.selectedItem.toString()
+        val evolve = evolText.selectedItem.toString()
+        val location = locationText.text.toString()
 
         uploadTask.addOnSuccessListener { taskSnapshot ->
             val new_img = hashMapOf(
@@ -189,7 +206,8 @@ class Photo : AppCompatActivity() {
                 "border" to border,
                 "colour" to colour,
                 "diameter" to diameter,
-                "evolve" to evolve
+                "evolve" to evolve,
+                "location" to location
             )
 
             db.collection("mole_photos").document(dataUID)
@@ -213,15 +231,13 @@ class Photo : AppCompatActivity() {
             return
         }
         if (checked) {
-            asyText.setText(symmetryText(symmetry!!))
+            asyText.setSelection(symmetryText(symmetry!!))
             asyText.isEnabled = false
-            diamText.setText(diamText(area!!))
+            diamText.setSelection(diamText(area!!))
             diamText.isEnabled = false
         }
         else {
-            asyText.text.clear()
             asyText.isEnabled = true
-            diamText.text.clear()
             diamText.isEnabled = true
         }
     }
@@ -248,12 +264,24 @@ fun checkSymmetry(cm20: Double, cm11: Double, cm02: Double): Double {
     return if (ev2 > ev1) ev1 / ev2 else ev2 / ev1
 }
 
-fun symmetryText (symmetry: Double): String {
-    // TODO: Choose better threshold
-    return if (symmetry > 0.7) "Yes" else "No"
+fun symmetryText (symmetry: Double): Int {
+    // TODO: Choose more rigorous threshold
+    return optionIndex(symmetry > 0.7)
 }
 
-fun diamText(area:Double): String {
-    // TODO: Choose way better threshold
-    return if (area > 100.0) "Yes" else "No"
+fun diamText(area:Double): Int {
+    // TODO: Choose better threshold
+    return optionIndex(area > 120.0)
+}
+
+fun optionIndex(value: Boolean?): Int {
+    // Get index of spinner choice corresponding to appropriate value
+    // 0 = unsure, 1 = Yes, 2 = No
+    if (value == null) {
+        return 0
+    }
+    if (value) {
+        return 1
+    }
+    return 2
 }

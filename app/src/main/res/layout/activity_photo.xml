@@ -15,6 +15,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
+        android:contentDescription="@string/content_description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +60,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:text="@string/auto_generate"
-        android:textColor="#006D77"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -76,12 +76,11 @@
         android:layout_marginEnd="10dp"
         android:text="@string/mole_symmetry_q"
         android:textAlignment="viewStart"
-        android:textColor="#006D77"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/autogenresponses" />
 
-    <EditText
+    <Spinner
         android:id="@+id/asym_response"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -95,36 +94,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/asym_question" />
 
-    <EditText
-        android:id="@+id/evolve_response"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="10dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="@string/questionnaire_hint"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/evolve_question" />
-
     <TextView
-        android:id="@+id/evolve_question"
+        android:id="@+id/colour_question"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="10dp"
-        android:text="@string/mole_evolve_q"
+        android:text="@string/mole_colour_q"
         android:textAlignment="viewStart"
-        android:textColor="#006D77"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/colour_response" />
+        app:layout_constraintTop_toBottomOf="@+id/diameter_response" />
 
-    <EditText
+    <Spinner
         android:id="@+id/colour_response"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -139,21 +122,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/colour_question" />
 
+
     <TextView
-        android:id="@+id/colour_question"
+        android:id="@+id/diameter_question"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="10dp"
-        android:text="@string/mole_colour_q"
+        android:text="@string/mole_diam_q"
         android:textAlignment="viewStart"
-        android:textColor="#006D77"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/diameter_response" />
-
-    <EditText
+        app:layout_constraintTop_toBottomOf="@+id/border_response" />
+    <Spinner
         android:id="@+id/diameter_response"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -168,21 +150,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/diameter_question" />
 
-    <TextView
-        android:id="@+id/diameter_question"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="10dp"
-        android:text="@string/mole_diam_q"
-        android:textAlignment="viewStart"
-        android:textColor="#006D77"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/border_response" />
-
-    <EditText
+    <Spinner
         android:id="@+id/border_response"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -206,10 +174,65 @@
         android:layout_marginEnd="10dp"
         android:text="@string/mole_border_q"
         android:textAlignment="viewStart"
-        android:textColor="#006D77"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/asym_response" />
 
+    <TextView
+        android:id="@+id/evolve_question"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="10dp"
+        android:text="@string/mole_evolve_q"
+        android:textAlignment="viewStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/colour_response" />
+
+    <Spinner
+        android:id="@+id/evolve_response"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="10dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="@string/questionnaire_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/evolve_question" />
+
+    <TextView
+        android:id="@+id/location_question"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="10dp"
+        android:text="@string/mole_location_q"
+        android:textAlignment="viewStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/evolve_response" />
+
+    <EditText
+        android:id="@+id/location_response"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="10dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="@string/body_location_hint"
+        android:autofillHints="@string/body_location_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/location_question" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
