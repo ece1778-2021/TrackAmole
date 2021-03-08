@@ -1,15 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:padding="2dp"
-    android:layout_width="100dp"
-    android:layout_height="100dp">
 
-    <ImageView
-        android:id="@+id/im"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    card_view:cardBackgroundColor="#FFDDD2"
+    card_view:cardCornerRadius="10dp"
+    card_view:cardElevation="20dp"
+    card_view:contentPadding="20dp">
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/im"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true" />
+
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/im"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/amethysta"
+            android:text="Date recorded:"
+            android:textAlignment="viewStart"
+            android:textColor="#006d77"
+            android:textSize="20sp"
+            android:textStyle="italic" />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
