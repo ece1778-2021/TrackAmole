@@ -37,13 +37,18 @@ class FocusImage : AppCompatActivity() {
         setContentView(R.layout.activity_focusimage)
 
         val img = findViewById<ImageView>(R.id.bigImageView)
-        val caption = findViewById<TextView>(R.id.imageCaption)
+        val asymText = findViewById<TextView>(R.id.asymResponse)
+        val bordText = findViewById<TextView>(R.id.borderResponse)
+        val diamText = findViewById<TextView>(R.id.diameterResponse)
+        val colText = findViewById<TextView>(R.id.colourResponse)
+        val evolText = findViewById<TextView>(R.id.evolveResponse)
+        val locText = findViewById<TextView>(R.id.locationResponse)
 
-        val add_comment_btn = findViewById<Button>(R.id.add_comment)
-        val del = findViewById<Button>(R.id.delete)
+        //val add_comment_btn = findViewById<Button>(R.id.add_comment)
+        val del = findViewById<ImageButton>(R.id.delete)
 
-        addCommentField = findViewById(R.id.add_comment_text)
-        commentsShown = findViewById(R.id.comments)
+        //addCommentField = findViewById(R.id.add_comment_text)
+        //commentsShown = findViewById(R.id.comments)
 
         val extras: Bundle? = intent.extras
         if (extras != null) {
@@ -79,26 +84,38 @@ class FocusImage : AppCompatActivity() {
                     }
                     val img_info = document.data
                     val imgUID = img_info?.get("uid") as String
-                    var imgCaption = ""
-                    if (img_info["caption"] != null) {
-                        imgCaption = img_info["caption"] as String
-                    }
-                    comments = ""
-                    if (img_info["comments"] != null) {
-                        comments = img_info["comments"] as String
-                        commentsShown.setText(
-                            comments,
-                            TextView.BufferType.EDITABLE
-                        )
-                    }
+                    var asymetry = img_info["asymetry"] as String
+                    var border = img_info["border"] as String
+                    var diameter = img_info["diameter"] as String
+                    var colour = img_info["colour"] as String
+                    var evolve = img_info["evolve"] as String
+                    var location = img_info["location"] as String
+
+
+//                    if (img_info[""] != null) {
+//                        imgCaption = img_info["border"] as String
+//                    }
+//                    comments = ""
+//                    if (img_info["comments"] != null) {
+//                        comments = img_info["comments"] as String
+//                        commentsShown.setText(
+//                            comments,
+//                            TextView.BufferType.EDITABLE
+//                        )
+//                    }
 
                     val storageRef = storage.reference
                     val sr = img_info["storageRef"] as String
                     pathRef = storageRef.child(sr)
 
 
-                    if (imgCaption != "") {
-                        caption.text = imgCaption
+                    if (asymetry != "") {
+                        asymText.text = asymetry
+                        bordText.text = border
+                        colText.text = colour
+                        diamText.text = diameter
+                        evolText.text = evolve
+                        locText.text = location
                     }
 
                     if (imgUID == auth.currentUser?.uid) {
@@ -125,10 +142,10 @@ class FocusImage : AppCompatActivity() {
             errorExit()
         }
 
-        val btn = findViewById<Button>(R.id.back)
-        btn.setOnClickListener { onBackPressed() }
+        //val btn = findViewById<Button>(R.id.back)
+        //btn.setOnClickListener { onBackPressed() }
 
-        add_comment_btn.setOnClickListener { onAddComment() }
+        //add_comment_btn.setOnClickListener { onAddComment() }
         del.setOnClickListener { onDeleteCalled() }
     }
 
@@ -148,6 +165,7 @@ class FocusImage : AppCompatActivity() {
                 TextView.BufferType.EDITABLE
             )
         }
+
 
         addCommentField.setText("", TextView.BufferType.EDITABLE)
         addCommentField.isEnabled = false

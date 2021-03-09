@@ -26,6 +26,8 @@ class GlobalFeed : AppCompatActivity() {
 
     private val imgList = mutableListOf<Bitmap>()
     private val strList = mutableListOf<String>()
+    private val dateList = mutableListOf<String>()
+    private val locList = mutableListOf<String>()
 
     private lateinit var adapter: CustomAdapter
 
@@ -44,7 +46,7 @@ class GlobalFeed : AppCompatActivity() {
         val rView: RecyclerView = findViewById(R.id.recycleg)
         rView.layoutManager = GridLayoutManager(this, NUM_COLUMNS)
 
-        adapter = CustomAdapter(imgList, strList)
+        adapter = CustomAdapter(imgList, strList, dateList, locList)
         rView.adapter = adapter
 
         Toast.makeText(this, "Loading Images. Please Wait.", Toast.LENGTH_SHORT).show()

@@ -17,22 +17,33 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
+
         <ImageView
             android:id="@+id/im"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_centerHorizontal="true" />
-
+            android:layout_height="100dp" />
 
         <TextView
-            android:id="@+id/name"
-            android:layout_width="match_parent"
+            android:id="@+id/date"
+            android:layout_width="346dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/im"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="@font/amethysta"
+            android:layout_marginTop="-94dp"
+            android:fontFamily="casual"
             android:text="Date recorded:"
-            android:textAlignment="viewStart"
+            android:textAlignment="textEnd"
+            android:textColor="#006d77"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/date"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="casual"
+            android:text=""
+            android:textAlignment="textEnd"
             android:textColor="#006d77"
             android:textSize="20sp"
             android:textStyle="italic" />

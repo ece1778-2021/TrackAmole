@@ -21,7 +21,9 @@
         <activity
             android:name=".GlobalFeed"
             android:label="@string/label_global" />
-        <activity android:name=".FocusImage" />
+        <activity android:name=".FocusImage"
+            android:parentActivityName=".History">
+        </activity>
         <activity
             android:name=".Registration"
             android:label="@string/label_registration" />

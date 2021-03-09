@@ -17,6 +17,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import java.text.SimpleDateFormat
+import java.util.*
 
 class History : AppCompatActivity() {
 
@@ -33,6 +35,11 @@ class History : AppCompatActivity() {
 
     private val imgList = mutableListOf<Bitmap>()
     private val strList = mutableListOf<String>()
+    private val dateList = mutableListOf<String>()
+    private val locationList = mutableListOf<String>()
+
+    private val simpleDateFormat = SimpleDateFormat("dd MMMM yyyy, HH:mm:ss", Locale.ENGLISH)
+
 
     private lateinit var adapter: CustomAdapter
 
@@ -45,10 +52,11 @@ class History : AppCompatActivity() {
         val rView: RecyclerView = findViewById(R.id.recycle_hist)
         rView.layoutManager = LinearLayoutManager(this)
 
-        adapter = CustomAdapter(imgList, strList)
+        adapter = CustomAdapter(imgList, strList, dateList, locationList)
         rView.adapter = adapter
 
         // Place first in case not loading any images
+        var time:Long
 
         //loading.visibility = View.GONE
         val storageRef = storage.reference
@@ -66,6 +74,9 @@ class History : AppCompatActivity() {
                         }
                         imgList.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
                         strList.add(document.id)
+                        time = document.data["timestamp"] as Long
+                        dateList.add(getDateString(time).toString())
+                        locationList.add(document.data["location"] as String)
                         adapter.notifyDataSetChanged()
                         Log.d("PICS", "Successfully loaded image $sr from DB")
                     }.addOnFailureListener {
@@ -89,4 +100,6 @@ class History : AppCompatActivity() {
                 ).show()
             }
     }
+    private fun getDateString(time: Long) : String = simpleDateFormat.format(time * 1000L)
+
 }

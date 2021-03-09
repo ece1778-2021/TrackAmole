@@ -9,9 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomAdapter(private val dataSet: MutableList<Bitmap>, private val imgPathsSet: MutableList<String>) :
+class CustomAdapter(private val dataSet: MutableList<Bitmap>, private val imgPathsSet: MutableList<String>, private val imgDateSet: MutableList<String>, private val imgLocSet: MutableList<String>) :
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     /**
@@ -20,6 +21,8 @@ class CustomAdapter(private val dataSet: MutableList<Bitmap>, private val imgPat
      */
     class ViewHolder(view: View, context: Context) : RecyclerView.ViewHolder(view) {
         var imageView: ImageView = view.findViewById(R.id.im)
+        var dateDisplay: TextView = view.findViewById(R.id.date)
+        var locDisplay: TextView = view.findViewById(R.id.location)
         val c = context
         var uid: String = ""
 
@@ -57,6 +60,8 @@ class CustomAdapter(private val dataSet: MutableList<Bitmap>, private val imgPat
         // contents of the view with that element
         viewHolder.imageView.setImageBitmap(dataSet[position])
         viewHolder.uid = imgPathsSet[position]
+        viewHolder.dateDisplay.setText(imgDateSet[position])
+        viewHolder.locDisplay.setText(imgLocSet[position])
     }
 
     // Return the size of your dataset (invoked by the layout manager)
