@@ -35,6 +35,7 @@ class Photo : AppCompatActivity() {
     private val storage: FirebaseStorage = Firebase.storage
 
     private lateinit var uid: String
+    private lateinit var moleID: String
 
     private lateinit var asyText: Spinner
     private lateinit var bordText: Spinner
@@ -86,6 +87,8 @@ class Photo : AppCompatActivity() {
         val extras: Bundle? = intent.extras
         if (extras != null) {
             img.setImageBitmap(extras.get("NEW_PHOTO") as Bitmap)
+            moleID = extras.get("MOLE_NAME") as String
+            //locationText.setText(moleID)
         } else {
             Log.w("PHOTO", "Error: Photo Intent started without new picture")
         }
@@ -165,7 +168,7 @@ class Photo : AppCompatActivity() {
         val cStr = colours.toString()
         val sStr = symmetries.toString()
 
-        area = areas.sum() / s
+        area = areas.sum() / s //multiply by scaling factor here
         symmetry = symmetries.sum() / s
 
         Log.i("OPENCV", "Areas: $aStr")
@@ -173,6 +176,7 @@ class Photo : AppCompatActivity() {
         Log.i("OPENCV", "Symmetry: $sStr")
         Utils.matToBitmap(cvImgBase, final)
         img.setImageBitmap(final)
+        Toast.makeText(this, "Area in pixels is "+area.toString(), Toast.LENGTH_LONG).show()
     }
 
     private fun onConfirm() {
@@ -207,7 +211,8 @@ class Photo : AppCompatActivity() {
                 "colour" to colour,
                 "diameter" to diameter,
                 "evolve" to evolve,
-                "location" to location
+                "location" to location,
+                "uniqueName" to moleID
             )
 
             db.collection("mole_photos").document(dataUID)
@@ -240,6 +245,7 @@ class Photo : AppCompatActivity() {
             asyText.isEnabled = true
             diamText.isEnabled = true
         }
+
     }
 }
 

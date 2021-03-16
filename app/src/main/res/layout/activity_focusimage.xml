@@ -76,7 +76,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="30dp"
-        android:fontFamily="sans-serif-medium"
+        android:fontFamily="sans-serif-black"
         android:textAlignment="textEnd"
         app:layout_constraintBottom_toTopOf="@+id/colour_question"
         app:layout_constraintEnd_toEndOf="parent"

@@ -114,7 +114,10 @@ class MainActivity : AppCompatActivity() {
         
         loading.visibility = View.GONE
 
-        photo.setOnClickListener { onNewPhoto() }
+        photo.setOnClickListener {
+            val moleIntent = Intent(this, MoleSelect::class.java)
+            startActivity(moleIntent)
+        }
         gallery_photo.setOnClickListener { selectImage() }
         history.setOnClickListener{ loadHistory()}
         logout.setOnClickListener { onLogout() }
