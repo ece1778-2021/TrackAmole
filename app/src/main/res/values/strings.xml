@@ -30,6 +30,13 @@
     <string name="new_photo">New Photo</string>
     <string name="back">Back</string>
     <string name="global_page">Global Feed</string>
+    <string name="home_text_main">HOME</string>
+    <string name="take_picture_btn_text">Take Picture</string>
+    <string name="send_data_to_doctor_btn_text">Send Data to Doctor</string>
+    <string name="history_btn_text">History</string>
+    <string name="gallery_btn_text">Add from Gallery</string>
+    <string name="physician_id_txt">Private ID:</string>
+    <string name="physician_btn_txt">Show Patient Data</string>
     <!-- Global Page-->
     <string name="main_page">Back to My Feed</string>
     <!-- Photo Page-->
@@ -48,4 +55,7 @@
     <string name="comments_title">Comments</string>
     <string name="comments_default">No Comments</string>
     <string name="add_comment">Add Comment</string>
-    </resources>
+    <!--    New Page-->
+    <string name="add_doctor_btn">Add Doctor</string>
+    <string name="prompt_physicianID">Physician Private ID</string>
+</resources>

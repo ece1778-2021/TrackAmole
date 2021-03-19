@@ -104,13 +104,22 @@ class MainActivity : AppCompatActivity() {
                 username.text = user_info?.get("username") as String
                 username.visibility = View.VISIBLE
 
-                if (user_info["physician"] as Boolean) {
+                var check: Boolean = user_info["physician"] != null
+                if (check) {
+                    check = user_info["physician"] as Boolean
+                }
+
+                if (check) {
                     val pStr = getString(R.string.physician_id_txt)
                     val pidStr = "$pStr $uid"
                     physicianID.text = pidStr
                     physicianID.visibility = View.VISIBLE
 
                     doctor_btn.text = getString(R.string.physician_btn_txt)
+                    doctor_btn.setOnClickListener{ onViewData() }
+                }
+                else {
+                    doctor_btn.setOnClickListener{ onSendData() }
                 }
 
 
@@ -121,16 +130,16 @@ class MainActivity : AppCompatActivity() {
                 val exitIntent = Intent(this, StartScreen::class.java)
                 startActivity(exitIntent)
             }
-        
+
         loading.visibility = View.GONE
 
         photo.setOnClickListener { onNewPhoto() }
         gallery_photo.setOnClickListener { selectImage() }
-        history.setOnClickListener{ loadHistory()}
+        history.setOnClickListener { loadHistory() }
         logout.setOnClickListener { onLogout() }
     }
 
-    private fun loadHistory(){
+    private fun loadHistory() {
         val getHistory = Intent(this, History::class.java)
         startActivity(getHistory)
 
@@ -142,7 +151,7 @@ class MainActivity : AppCompatActivity() {
         dispatchTakePictureIntent()
     }
 
-    private fun selectImage(){
+    private fun selectImage() {
         val pickPhoto = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         //val pickPhoto = Intent(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(pickPhoto, REQUEST_GALLERY_IMAGE)
@@ -192,5 +201,14 @@ class MainActivity : AppCompatActivity() {
     private fun onGlobal() {
         val globalIntent = Intent(this, GlobalFeed::class.java)
         startActivity(globalIntent)
+    }
+
+    private fun onSendData() {
+        val sendIntent = Intent(this, SendData::class.java)
+        startActivity(sendIntent)
+    }
+
+    private fun onViewData() {
+        return
     }
 }
