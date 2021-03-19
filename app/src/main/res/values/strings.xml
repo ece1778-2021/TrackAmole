@@ -25,6 +25,7 @@
     <string name="bio">A Short Bio</string>
     <string name="action_add_picture">Add Picture</string>
     <string name="pp_storage_name">profile_picture.jpg</string>
+    <string name="physician_checkbox">Are you a physician?</string>
     <!-- Main Page-->
     <string name="new_photo">New Photo</string>
     <string name="back">Back</string>
