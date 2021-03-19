@@ -73,8 +73,7 @@ class Registration : AppCompatActivity() {
         if (pw.text.toString() != pw2.text.toString()) {
             pw2.error = "Passwords do not match!"
             registerButton.isEnabled = false
-        }
-        else {
+        } else {
             registerButton.isEnabled = true
         }
     }
@@ -92,13 +91,7 @@ class Registration : AppCompatActivity() {
         if ((providedEmail == "") || (providedPassword == "")) {
             Log.d("REGISTER", "User did not provide input E/P")
             loading.visibility = View.GONE
-            val t = Toast.makeText(
-                this,
-                "Error: Blank email/password fields.",
-                Toast.LENGTH_LONG
-            )
-            t.setGravity(Gravity.CENTER, 0, 0)
-            t.show()
+            Toast.makeText(this, "Error: Blank email/password field.", Toast.LENGTH_LONG).show()
             return
         }
 
@@ -106,13 +99,9 @@ class Registration : AppCompatActivity() {
         if ((providedUsername == "")) {
             Log.d("REGISTER", "User did not provide input U/B")
             loading.visibility = View.GONE
-            val t = Toast.makeText(
-                this,
-                "Error: Blank username field. Please fill out these fields",
-                Toast.LENGTH_LONG
-            )
-            t.setGravity(Gravity.CENTER, 0, 0)
-            t.show()
+            Toast.makeText(
+                this, "Error: Blank username field.", Toast.LENGTH_LONG
+            ).show()
             return
         }
 
@@ -167,13 +156,10 @@ class Registration : AppCompatActivity() {
                 } else {
                     Log.d("REGISTER", "Create user failed with " + task.exception)
                     loading.visibility = View.GONE
-                    val t = Toast.makeText(
-                        this,
-                        "Authentication Failed! Please try again.",
+                    Toast.makeText(
+                        this, "Authentication Failed! Please try again.",
                         Toast.LENGTH_LONG
-                    )
-                    t.setGravity(Gravity.CENTER, 0, 0)
-                    t.show()
+                    ).show()
                 }
             }
     }
