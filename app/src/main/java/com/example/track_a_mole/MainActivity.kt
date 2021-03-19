@@ -25,7 +25,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 class MainActivity : AppCompatActivity() {
 
     private lateinit var username: TextView
-    //private lateinit var bio: TextView
+    private lateinit var physicianID: TextView
     private lateinit var img: CircleImageView
 
     private lateinit var loading: ProgressBar
@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
 
     private val REQUEST_IMAGE_CAPTURE: Int = 1
     private val REQUEST_GALLERY_IMAGE: Int = 2
-    private val NUM_COLUMNS: Int = 3
     private val ONE_MEGABYTE: Long = 1024 * 1024
 
     private val imgList = mutableListOf<Bitmap>()
@@ -52,6 +51,8 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("PROFILE", "Profile Start")
 
+        physicianID = findViewById(R.id.physicianID)
+
         username = findViewById(R.id.profile_name)
         img = findViewById(R.id.profile_image)
         loading = findViewById<ProgressBar>(R.id.loading)
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity() {
         val photo: Button = findViewById(R.id.button_picture)
         val history: Button = findViewById(R.id.button_history)
         val gallery_photo: Button = findViewById(R.id.button_gallery)
+        val doctor_btn: Button = findViewById(R.id.button_sendData)
 
         if (auth.currentUser?.uid == null) {
             Log.w("PROFILE", "Got to Profile but no UID")
@@ -100,8 +102,16 @@ class MainActivity : AppCompatActivity() {
                 }
                 val user_info = document.data
                 username.text = user_info?.get("username") as String
-
                 username.visibility = View.VISIBLE
+
+                if (user_info["physician"] as Boolean) {
+                    val pStr = getString(R.string.physician_id_txt)
+                    val pidStr = "$pStr $uid"
+                    physicianID.text = pidStr
+                    physicianID.visibility = View.VISIBLE
+
+                    doctor_btn.text = getString(R.string.physician_btn_txt)
+                }
 
 
                 Log.d("PROFILE", "Success - User successfully loaded")
