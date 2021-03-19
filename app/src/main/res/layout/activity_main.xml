@@ -15,7 +15,7 @@
         android:layout_marginTop="80dp"
         android:layout_marginEnd="30dp"
         android:backgroundTint="#FFDDD2"
-        android:text="History"
+        android:text="@string/history_btn_text"
         android:textColor="#006D77"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_name" />
@@ -27,7 +27,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
         android:backgroundTint="#FFDDD2"
-        android:text="Send Data to Doctor"
+        android:text="@string/send_data_to_doctor_btn_text"
         android:textColor="#006D77"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_picture" />
@@ -39,7 +39,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         android:backgroundTint="#FFDDD2"
-        android:text="Add from Gallery"
+        android:text="@string/gallery_btn_text"
         android:textColor="#006D77"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_history" />
@@ -62,15 +62,16 @@
         android:id="@+id/profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/username"
         android:textSize="24sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.241"
+        app:layout_constraintHorizontal_bias="0.26"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/profile_image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -112,7 +113,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="80dp"
         android:backgroundTint="#FFDDD2"
-        android:text="Take Picture"
+        android:text="@string/take_picture_btn_text"
         android:textColor="#006D77"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_name" />
@@ -122,12 +123,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:text="HOME"
+        android:text="@string/home_text_main"
         android:textColor="#006D77"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/button_picture"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_name" />
+
+    <TextView
+        android:id="@+id/physicianID"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:text="@string/physician_id_txt"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/profile_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_name"
+        app:layout_constraintStart_toEndOf="@id/profile_image"
+        app:layout_constraintVertical_bias="0.07" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
