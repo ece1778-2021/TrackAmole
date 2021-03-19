@@ -12,10 +12,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -30,7 +27,7 @@ class Registration : AppCompatActivity() {
     private lateinit var pw: EditText
     private lateinit var pw2: EditText
     private lateinit var username: EditText
-    //private lateinit var bio: EditText
+    private lateinit var physician_check: CheckBox
     private lateinit var image: CircleImageView
 
     private lateinit var loading: ProgressBar
@@ -56,7 +53,7 @@ class Registration : AppCompatActivity() {
         pw = findViewById<EditText>(R.id.password)
         pw2 = findViewById<EditText>(R.id.password_confirmation)
         username = findViewById<EditText>(R.id.username)
-        //bio = findViewById<EditText>(R.id.bio)
+        physician_check = findViewById<CheckBox>(R.id.physician_check)
         image = findViewById(R.id.profile_image)
         loading = findViewById<ProgressBar>(R.id.loading)
         imageButton = findViewById(R.id.add_image)
@@ -89,7 +86,7 @@ class Registration : AppCompatActivity() {
         val providedEmail = email.text.toString()
         val providedPassword = pw.text.toString()
         val providedUsername = username.text.toString()
-        //val providedBio = bio.text.toString()
+        val isPhysician = physician_check.isChecked
 
         // Catch user input which will cause the app to crash and return failure
         if ((providedEmail == "") || (providedPassword == "")) {
@@ -130,7 +127,8 @@ class Registration : AppCompatActivity() {
 
                     val new_user = hashMapOf(
                         "email" to providedEmail,
-                        "username" to providedUsername
+                        "username" to providedUsername,
+                        "physician" to isPhysician
                     )
 
                     db.collection("mole_users").document(userUID)
