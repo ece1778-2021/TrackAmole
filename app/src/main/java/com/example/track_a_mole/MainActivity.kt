@@ -212,6 +212,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onViewData() {
-        return
+        val patientData = Intent(this, PhysicianView::class.java)
+        startActivity(patientData)
     }
 }
