@@ -28,16 +28,16 @@ class PhysicianAdapter(private val userSet: MutableList<String>, private val uid
             // Define click listener for the ViewHolder's View.
             view.setOnClickListener{
                 Log.i("RVCLICK", adapterPosition.toString())
-                //val zoomIntent = Intent(c, FocusImage::class.java)
-                //zoomIntent.putExtra(
-                //    "PICTURE",
-                //    (imageView.drawable as BitmapDrawable).bitmap
-                //)
+                val zoomIntent = Intent(c, PatientHistory::class.java)
+                zoomIntent.putExtra(
+                   "UID",
+                    uid
+                )
                 //zoomIntent.putExtra(
                 //    "UID",
                 //   uid
                 //)
-                //c.startActivity(zoomIntent)
+                c.startActivity(zoomIntent)
             }
         }
     }
