@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EDf6F9"
+    android:backgroundTint="#EDf6F9"
     tools:context=".MoleSelect">
 
     <TextView
@@ -35,15 +37,15 @@
             android:id="@+id/radio_existing_mole"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Record an existing mole"
-            android:onClick="onRadioButtonClicked"/>
+            android:onClick="onRadioButtonClicked"
+            android:text="Record an existing mole" />
 
         <RadioButton
             android:id="@+id/radio_new_mole"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Record new mole"
-            android:onClick="onRadioButtonClicked"/>
+            android:onClick="onRadioButtonClicked"
+            android:text="Record new mole" />
     </RadioGroup>
 
     <TextView
@@ -53,8 +55,8 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="12dp"
-        android:visibility="gone"
         android:text="Enter unique name for your mole"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mole_selection" />

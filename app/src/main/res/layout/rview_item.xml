@@ -18,7 +18,7 @@
         android:layout_gravity="center">
 
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/im"
             android:layout_width="100dp"
             android:layout_height="100dp" />
@@ -29,11 +29,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/im"
             android:layout_marginTop="-94dp"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif-condensed-medium"
             android:text="Date recorded:"
             android:textAlignment="textEnd"
             android:textColor="#006d77"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/location"
@@ -41,12 +41,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/date"
             android:layout_centerHorizontal="true"
-            android:fontFamily="casual"
+            android:fontFamily="serif-monospace"
             android:text=""
             android:textAlignment="textEnd"
             android:textColor="#006d77"
-            android:textSize="20sp"
-            android:textStyle="italic" />
+            android:textSize="18sp"
+            android:textStyle="normal" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
