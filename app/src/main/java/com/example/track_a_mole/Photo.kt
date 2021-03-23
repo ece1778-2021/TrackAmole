@@ -277,7 +277,7 @@ fun symmetryText (symmetry: Double): Int {
 
 fun diamText(area:Double): Int {
     // TODO: Choose better threshold
-    return optionIndex(area > 120.0)
+    return optionIndex(area > 1104.5)
 }
 
 fun optionIndex(value: Boolean?): Int {
