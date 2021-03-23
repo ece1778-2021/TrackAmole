@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadHistory() {
-        val getHistory = Intent(this, History::class.java)
+        val getHistory = Intent(this, HistoryMoles::class.java)
         startActivity(getHistory)
 
     }
