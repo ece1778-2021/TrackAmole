@@ -107,16 +107,17 @@ class SendData : AppCompatActivity() {
                                     .addOnFailureListener {
                                         Log.w("ADDP", "Unable to retrieve data")
                                     }
-
+                                Toast.makeText(this, "Physician Added!", Toast.LENGTH_SHORT).show()
 
                             }
                             .addOnFailureListener {
                                 Log.w("ADDP", "Unable to retrieve DR data")
                             }
 
-                    }
-                    else {
-                        Toast.makeText(this, "ID does not belong to Physician!", Toast.LENGTH_LONG).show()
+
+                    } else {
+                        Toast.makeText(this, "ID does not belong to Physician!", Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
                 Log.d("ADDP", "Success - DR successfully loaded")
@@ -125,8 +126,6 @@ class SendData : AppCompatActivity() {
             .addOnFailureListener {
                 Log.w("ADDP", "Unable to retrieve DR data")
             }
-
-        Toast.makeText(this, "Physician Added!", Toast.LENGTH_SHORT).show()
 
         loading.visibility = View.GONE
     }
