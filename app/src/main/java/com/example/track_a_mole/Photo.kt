@@ -1,5 +1,6 @@
 package com.example.track_a_mole
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SwitchCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -39,7 +41,7 @@ class Photo : AppCompatActivity() {
 
     private lateinit var asyText: Spinner
     private lateinit var bordText: Spinner
-    private lateinit var colText:  Spinner
+    private lateinit var colText: Spinner
     private lateinit var evolText: Spinner
     private lateinit var diamText: Spinner
     private lateinit var locationText: EditText
@@ -49,7 +51,7 @@ class Photo : AppCompatActivity() {
 
     private var area: Double? = null
     private var colour: Int? = null
-    private var symmetry:Double? = null
+    private var symmetry: Double? = null
 
     private val loader = object : BaseLoaderCallback(this) {
         override fun onManagerConnected(status: Int) {
@@ -99,7 +101,7 @@ class Photo : AppCompatActivity() {
             onSwitch(
                 checked
             )
-    }
+        }
 
         if (OpenCVLoader.initDebug()) {
             Log.d("OPENCV", "OpenCV successfully loaded")
@@ -176,7 +178,7 @@ class Photo : AppCompatActivity() {
         Log.i("OPENCV", "Symmetry: $sStr")
         Utils.matToBitmap(cvImgBase, final)
         img.setImageBitmap(final)
-        Toast.makeText(this, "Area in pixels is "+area.toString(), Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Area in pixels is " + area.toString(), Toast.LENGTH_LONG).show()
     }
 
     private fun onConfirm() {
@@ -223,16 +225,39 @@ class Photo : AppCompatActivity() {
             .addOnFailureListener {
                 Log.w("PHOTO", "Upload picture failed")
             }
-
-        Thread.sleep(1000) // give the image time to actually post to the database
         Toast.makeText(this, "Image Posted.", Toast.LENGTH_SHORT).show()
-        val mainIntent = Intent(this, MainActivity::class.java)
-        startActivity(mainIntent)
+        var counter: Int = 0
+        val questions: List<Spinner> = listOf(asyText, bordText, colText, diamText, evolText)
+        for (i in questions) {
+            if (i.selectedItemPosition == 1) {
+                ++counter
+            }
+        }
+        val cnt = counter.toString()
+        Log.d("PHOTO", "RISK FACTOR COUNTER VALUE: $cnt")
+        val finished = { ->
+            val mainIntent = Intent(this, MainActivity::class.java)
+            startActivity(mainIntent)
+        }
+        if (counter > 1) {
+            AlertDialog.Builder(this).setTitle("Contact Doctor")
+                .setMessage("This mole shows multiple risk factors. You may want to contact your doctor for a follow up.")
+                .setPositiveButton("OK") {d, w -> finished()}
+                .setCancelable(false)
+                .show()
+
+        } else {
+            finished()
+        }
     }
 
     private fun onSwitch(checked: Boolean) {
         if (area == null || symmetry == null) {
-            Toast.makeText(this, "Image is being processed.\nPlease reset switch and try again.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "Image is being processed.\nPlease reset switch and try again.",
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
         if (checked) {
@@ -240,8 +265,7 @@ class Photo : AppCompatActivity() {
             asyText.isEnabled = false
             diamText.setSelection(diamText(area!!))
             diamText.isEnabled = false
-        }
-        else {
+        } else {
             asyText.isEnabled = true
             diamText.isEnabled = true
         }
@@ -262,7 +286,7 @@ fun checkSymmetry(cm20: Double, cm11: Double, cm02: Double): Double {
     // Due to matrix properties it is guaranteed that there will be two real +ve eigenvals
     val b: Double = -1.0 * (cm20 + cm02)
     val c: Double = cm20 * cm02 - (cm11 * cm11)
-    val sqrt_disc: Double = sqrt((b * b) - (4  * c))
+    val sqrt_disc: Double = sqrt((b * b) - (4 * c))
 
     val ev1 = (-b + sqrt_disc) / 2.0
     val ev2 = (-b - sqrt_disc) / 2.0
@@ -270,12 +294,12 @@ fun checkSymmetry(cm20: Double, cm11: Double, cm02: Double): Double {
     return if (ev2 > ev1) ev1 / ev2 else ev2 / ev1
 }
 
-fun symmetryText (symmetry: Double): Int {
+fun symmetryText(symmetry: Double): Int {
     // TODO: Choose more rigorous threshold
     return optionIndex(symmetry > 0.7)
 }
 
-fun diamText(area:Double): Int {
+fun diamText(area: Double): Int {
     // TODO: Choose better threshold
     return optionIndex(area > 1104.5)
 }
