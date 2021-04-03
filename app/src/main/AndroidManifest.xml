@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrackaMole">
-        <activity android:name=".Tracker"></activity>
+        <activity android:name=".MoleTransit"></activity>
+        <activity android:name=".Tracker" />
         <activity android:name=".HistoryMoles" />
         <activity android:name=".PatientHistory" />
         <activity android:name=".PhysicianView" />
