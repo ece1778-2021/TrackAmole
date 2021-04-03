@@ -37,6 +37,7 @@
     <string name="gallery_btn_text">Add from Gallery</string>
     <string name="physician_id_txt">Private ID:</string>
     <string name="physician_btn_txt">Show Patient Data</string>
+    <string name="copy_btn_txt">Copy ID</string>
     <!-- Global Page-->
     <string name="main_page">Back to My Feed</string>
     <!-- Photo Page-->
