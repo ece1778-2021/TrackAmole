@@ -1,7 +1,6 @@
 package com.example.track_a_mole
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
+import android.content.*
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
@@ -117,6 +116,10 @@ class MainActivity : AppCompatActivity() {
 
                     doctor_btn.text = getString(R.string.physician_btn_txt)
                     doctor_btn.setOnClickListener{ onViewData() }
+
+                    val copyid_btn = findViewById<Button>(R.id.copyid)
+                    copyid_btn.visibility = View.VISIBLE
+                    copyid_btn.setOnClickListener{ onCopyID() }
                 }
                 else {
                     doctor_btn.setOnClickListener{ onSendData() }
@@ -214,5 +217,11 @@ class MainActivity : AppCompatActivity() {
     private fun onViewData() {
         val patientData = Intent(this, PhysicianView::class.java)
         startActivity(patientData)
+    }
+
+    private fun onCopyID() {
+        val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.setPrimaryClip(ClipData.newPlainText("Physician ID", uid))
+        Toast.makeText(this, "ID Copied!", Toast.LENGTH_SHORT).show()
     }
 }
