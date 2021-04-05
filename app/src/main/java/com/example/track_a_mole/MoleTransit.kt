@@ -29,8 +29,11 @@ class MoleTransit : AppCompatActivity() {
     private val storage: FirebaseStorage = Firebase.storage
 
     private val ONE_MEGABYTE: Long = 1024 * 1024
+    private var flag:Int = 0
     private val imgList = mutableListOf<Bitmap>()
     private lateinit var uid: String
+    private lateinit var viewpager:ViewPager
+    private lateinit var adapter:PagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +42,8 @@ class MoleTransit : AppCompatActivity() {
         uid = auth.currentUser?.uid.toString()
         moleID = intent.getStringExtra("example").toString()
 
+        viewpager = findViewById(R.id.viewPager)
+        //viewpager.autoScroll(2000)
 
 
 
@@ -68,6 +73,7 @@ class MoleTransit : AppCompatActivity() {
                         }
                         imgList.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
                         Log.d("MOLE PICS", "Successfully loaded image $sr from DB")
+                        updateView()
                     }.addOnFailureListener {
                         Log.w("MOLE PICS", "Unable to get image $sr from DB")
                     }
@@ -79,6 +85,15 @@ class MoleTransit : AppCompatActivity() {
                         //loading.visibility = View.GONE
                     }
                 }
+                if(imgList.isNotEmpty()){
+                    var adapter: PagerAdapter = SliderAdapter(applicationContext, images, imgList)
+                    var viewpager: ViewPager = findViewById(R.id.viewPager)
+                    Log.d("TRANSITON", moleID)
+                    viewpager.adapter = adapter
+                    viewpager.autoScroll(2000)
+                }
+
+
             }
             .addOnFailureListener {
                 Log.d("PICS", "Unable to find user images.")
@@ -89,13 +104,21 @@ class MoleTransit : AppCompatActivity() {
                 ).show()
             }
 
-        var adapter: PagerAdapter = SliderAdapter(applicationContext, images)
 
-        var viewpager: ViewPager = findViewById(R.id.viewPager)
+    }
 
-        Log.d("TRANSITON", moleID)
-        viewpager.adapter = adapter
-        viewpager.autoScroll(3000)
+    private fun updateView() {
+        if(flag == 0){
+            adapter = SliderAdapter(applicationContext, images, imgList)
+            viewpager.adapter = adapter
+            viewpager.autoScroll(2000)
+            flag = 1
+        }
+        else{
+            adapter.notifyDataSetChanged()
+
+        }
+        Log.d("TRANSITON", "updating view")
     }
 
 
