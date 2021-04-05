@@ -43,6 +43,7 @@ class MoleTransit : AppCompatActivity() {
         moleID = intent.getStringExtra("example").toString()
 
         viewpager = findViewById(R.id.viewPager)
+        viewpager.setPageTransformer(true, FadeOutPageTransformer())
         //viewpager.autoScroll(2000)
 
 
@@ -85,13 +86,13 @@ class MoleTransit : AppCompatActivity() {
                         //loading.visibility = View.GONE
                     }
                 }
-                if(imgList.isNotEmpty()){
-                    var adapter: PagerAdapter = SliderAdapter(applicationContext, images, imgList)
-                    var viewpager: ViewPager = findViewById(R.id.viewPager)
-                    Log.d("TRANSITON", moleID)
-                    viewpager.adapter = adapter
-                    viewpager.autoScroll(2000)
-                }
+//                if(imgList.isNotEmpty()){
+//                    var adapter: PagerAdapter = SliderAdapter(applicationContext, images, imgList)
+//                    var viewpager: ViewPager = findViewById(R.id.viewPager)
+//                    Log.d("TRANSITON", moleID)
+//                    viewpager.adapter = adapter
+//                    viewpager.autoScroll(2000)
+//                }
 
 
             }
@@ -111,7 +112,7 @@ class MoleTransit : AppCompatActivity() {
         if(flag == 0){
             adapter = SliderAdapter(applicationContext, images, imgList)
             viewpager.adapter = adapter
-            viewpager.autoScroll(2000)
+            viewpager.autoScroll(3000)
             flag = 1
         }
         else{
