@@ -161,6 +161,8 @@ class MainActivity : AppCompatActivity() {
         val pickPhoto = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         //val pickPhoto = Intent(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(pickPhoto, REQUEST_GALLERY_IMAGE)
+        //val moleTransit = Intent(this, MoleTransit::class.java)
+        //startActivity(moleTransit)
     }
 
     private fun dispatchTakePictureIntent() {
