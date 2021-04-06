@@ -62,7 +62,7 @@ class MoleTransit : AppCompatActivity() {
         db.collection("mole_photos").whereEqualTo("uid", uid).whereEqualTo("uniqueName", moleID).get()
             .addOnSuccessListener { documents ->
                 var ds = documents.sortedWith(compareBy { it.data["timestamp"] as Long })
-                ds = ds.asReversed()
+                //ds = ds.asReversed()
                 Log.d("MOLE PICS", "Found  Documents")
                 for (document in ds) {
                     val sr = document.data["storageRef"]

@@ -59,4 +59,5 @@
     <!--    New Page-->
     <string name="add_doctor_btn">Add Doctor</string>
     <string name="prompt_physicianID">Physician Private ID</string>
+    <string name="playback_history">Playback History</string>
 </resources>

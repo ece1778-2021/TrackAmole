@@ -54,6 +54,7 @@ class Tracker : AppCompatActivity() {
         uid = auth.currentUser?.uid.toString()
 
         val playBtn: ImageButton = findViewById(R.id.imageButton_play)
+        val homeBtn: ImageButton = findViewById(R.id.homeButton)
 
         val rView: RecyclerView = findViewById(R.id.tracker_view)
         rView.layoutManager = LinearLayoutManager(this)
@@ -115,6 +116,12 @@ class Tracker : AppCompatActivity() {
 
         //playBtn.setOnClickListener()
         playBtn.setOnClickListener { viewMole() }
+        homeBtn.setOnClickListener{ returnHome() }
+    }
+
+    private fun returnHome(){
+        val homeView = Intent(this, MainActivity::class.java)
+        startActivity(homeView)
     }
 
     private fun viewMole() {
